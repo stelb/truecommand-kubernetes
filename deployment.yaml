@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: truecommand
+  labels:
+    app: truecommand
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: truecommand
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: truecommand
+    spec:
+      containers:
+        - image: ixsystems/truecommand:latest
+          name: truecommand
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /data
+              name: truecommand-data
+      restartPolicy: Always
+      volumes:
+        - name: truecommand-data
+          persistentVolumeClaim:
+            claimName: truecommand-data
